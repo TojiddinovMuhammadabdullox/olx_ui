@@ -3,13 +3,27 @@ import 'package:flutter/material.dart';
 import 'package:hometask_37_olx/pages/first.dart';
 import 'package:hometask_37_olx/pages/second.dart';
 
-class ThirdScreen extends StatelessWidget {
+class ThirdScreen extends StatefulWidget {
   ThirdScreen({super.key});
+
+  @override
+  _ThirdScreenState createState() => _ThirdScreenState();
+}
+
+class _ThirdScreenState extends State<ThirdScreen> {
   List<String> listProducts = [
     "assets/products/home_product.png",
     "assets/products/white_product.png",
     "assets/products/furniture_product.png",
   ];
+
+  List<String> productNames = [
+    "Пульт универсальный работающий на\nразных частотах",
+    "Белый продукт",
+    "Мебельный продукт"
+  ];
+
+  String searchQuery = '';
 
   @override
   Widget build(BuildContext context) {
@@ -17,6 +31,17 @@ class ThirdScreen extends StatelessWidget {
       backgroundColor: Color(0xFFBAD4D0),
       appBar: AppBar(
         backgroundColor: const Color(0xFFF1F0F5),
+        title: TextField(
+          onChanged: (value) {
+            setState(() {
+              searchQuery = value;
+            });
+          },
+          decoration: InputDecoration(
+            hintText: 'Search...',
+            border: InputBorder.none,
+          ),
+        ),
         actions: [
           Row(
             children: [
@@ -82,7 +107,7 @@ class ThirdScreen extends StatelessWidget {
         ],
       ),
       body: GridView.builder(
-        itemCount: 20,
+        itemCount: listProducts.length,
         padding: const EdgeInsets.all(15),
         gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2,
@@ -91,6 +116,9 @@ class ThirdScreen extends StatelessWidget {
           childAspectRatio: 3 / 5,
         ),
         itemBuilder: (context, index) {
+          if (!productNames[index].contains(searchQuery)) {
+            return SizedBox.shrink();
+          }
           return Container(
             color: const Color(0xFFF1F0F5),
             child: Padding(
@@ -101,7 +129,7 @@ class ThirdScreen extends StatelessWidget {
                   Stack(
                     children: [
                       Image.asset(
-                        listProducts[index % 3],
+                        listProducts[index],
                       ),
                       Positioned(
                         bottom: 0,

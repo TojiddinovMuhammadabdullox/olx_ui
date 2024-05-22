@@ -3,20 +3,44 @@ import 'package:flutter/material.dart';
 import 'package:hometask_37_olx/pages/first.dart';
 import 'package:hometask_37_olx/pages/third.dart';
 
-class SecondScreen extends StatelessWidget {
+class SecondScreen extends StatefulWidget {
   SecondScreen({super.key});
 
+  @override
+  _SecondScreenState createState() => _SecondScreenState();
+}
+
+class _SecondScreenState extends State<SecondScreen> {
   List<String> listProducts = [
     "assets/products/home_product.png",
     "assets/products/white_product.png",
     "assets/products/furniture_product.png",
   ];
 
+  List<String> productNames = [
+    "Пульт универсальный работающий на\nразных частотах",
+    "Белый продукт",
+    "Мебельный продукт"
+  ];
+
+  String searchQuery = '';
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Color(0xFFF1F0F5),
+        title: TextField(
+          onChanged: (value) {
+            setState(() {
+              searchQuery = value;
+            });
+          },
+          decoration: InputDecoration(
+            hintText: 'Search...',
+            border: InputBorder.none,
+          ),
+        ),
         actions: [
           Row(
             children: [
@@ -82,8 +106,11 @@ class SecondScreen extends StatelessWidget {
         ],
       ),
       body: ListView.separated(
-        itemCount: 3,
+        itemCount: listProducts.length,
         itemBuilder: (BuildContext context, int index) {
+          if (!productNames[index].contains(searchQuery)) {
+            return SizedBox.shrink();
+          }
           return Container(
             width: double.infinity,
             height: 250,
@@ -162,7 +189,6 @@ class SecondScreen extends StatelessWidget {
           );
         },
         separatorBuilder: (BuildContext context, int index) {
-          // Add a separator between items
           return const Divider();
         },
       ),
